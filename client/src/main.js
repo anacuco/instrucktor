@@ -22,10 +22,12 @@ var game = {
                 case 37:
                 console.log('left');
                 game.direction = -1;
+                game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(-1); transition: .1s');
                 break;
                 case 39:
                 console.log('right');
                 game.direction = 1;
+                game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(1); transition: .1s');
                 break;
                 case 38:
                 console.log('up');
