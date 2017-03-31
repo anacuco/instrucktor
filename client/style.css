@@ -1,1 +1,26 @@
-body { background: deepskyblue}
+body {
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#layer-0 {
+    position: absolute;
+    left: -20000px;
+    width: 40000px;
+    height: 100%;
+    border-bottom: 8px solid darkgray;
+}
+
+.stick {
+    width: 10px;
+    height: 30px;
+    background: gray;
+}
+.truck {
+    width: 100px;
+    height: 100px;
+    background: black;
+}
