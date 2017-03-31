@@ -6,6 +6,7 @@ var game = {
   init: function () {
     game.layer = document.querySelector('#layer-0');
     game.currentOffset = game.layer.offsetLeft;
+    game.truck = document.querySelector('#user1');
   },
 
   placePosts: function() {
@@ -36,7 +37,14 @@ var game = {
     var newOffset = game.currentOffset + amount;
     game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
     game.currentOffset = newOffset;
-  }
+  },
+
+    truck: null,
+
+    moveTruck: function (amount) {
+      var newLeft = game.truck.offsetLeft + amount;
+      game.truck.setAttribute('style', 'left: '+ newLeft + 'px');
+    }
 };
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -46,5 +54,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var animate = setInterval(function () {
     game.scroll(-1);
+    game.moveTruck(1);
   }, 25);
 });
