@@ -11,6 +11,8 @@ var game = {
         game.bindKeyboard();
     },
 
+    direction: 1,
+
     bindKeyboard: function () {
         window.addEventListener('keydown', function (evt) {
             switch(evt.keyCode) {
@@ -19,9 +21,11 @@ var game = {
                 break;
                 case 37:
                 console.log('left');
+                game.direction = -1;
                 break;
                 case 39:
                 console.log('right');
+                game.direction = 1;
                 break;
                 case 38:
                 console.log('up');
@@ -78,7 +82,7 @@ window.addEventListener('DOMContentLoaded', function () {
     game.placePosts();
 
     var gameLoop = setInterval(function () {
-        game.scroll(-1);
-        game.moveTruck(1);
+        game.scroll(-game.direction);
+        game.moveTruck(game.direction);
     }, 25);
 });
