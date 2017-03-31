@@ -1,50 +1,76 @@
 /**
- * Created by ana on 31/03/17.
- */
+* Created by ana on 31/03/17.
+*/
 
 var game = {
-  init: function () {
-    game.layer = document.querySelector('#layer-0');
-    game.currentOffset = game.layer.offsetLeft;
-  },
+    init: function () {
+        game.layer = document.querySelector('#layer-0');
+        game.currentOffset = game.layer.offsetLeft;
 
-  placePosts: function() {
-    var postTemplate = document.querySelector('#templates .post');
-    var length = game.layer.offsetWidth;
-    var offset = game.layer.offsetLeft;
+        game.bindKeyboard();
+    },
 
-    var chunkEnd = length + offset + 4000;
-    var chunkStart = length + offset;
+    bindKeyboard: function () {
+        window.addEventListener('keydown', function (evt) {
+            switch(evt.keyCode) {
+                case 40:
+                console.log('down');
+                break;
+                case 37:
+                console.log('left');
+                break;
+                case 39:
+                console.log('right');
+                break;
+                case 38:
+                console.log('up');
+                break;
+                case 32:
+                console.log('space');
+                break;
+                default:
+                console.log(evt.keyCode);
+            }
+        });
+    },
 
-    // var chunkEnd = length;
-    // var chunkStart = 0;
+    placePosts: function() {
+        var postTemplate = document.querySelector('#templates .post');
+        var length = game.layer.offsetWidth;
+        var offset = game.layer.offsetLeft;
 
-    for (var i = chunkStart; i < chunkEnd; i += 50) {
+        var chunkEnd = length + offset + 4000;
+        var chunkStart = length + offset;
 
-      var post = postTemplate.cloneNode();
+        // var chunkEnd = length;
+        // var chunkStart = 0;
 
-      post.setAttribute('style', 'left: ' + i + 'px');
+        for (var i = chunkStart; i < chunkEnd; i += 50) {
 
-      game.layer.appendChild(post);
+            var post = postTemplate.cloneNode();
+
+            post.setAttribute('style', 'left: ' + i + 'px');
+
+            game.layer.appendChild(post);
+        }
+    },
+
+    layer: null,
+    currentOffset: null,
+
+    scroll: function (amount) {
+        var newOffset = game.currentOffset + amount;
+        game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
+        game.currentOffset = newOffset;
     }
-  },
-
-  layer: null,
-  currentOffset: null,
-
-  scroll: function (amount) {
-    var newOffset = game.currentOffset + amount;
-    game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
-    game.currentOffset = newOffset;
-  }
 };
 
 window.addEventListener('DOMContentLoaded', function () {
-  game.init();
-  game.placePosts();
+    game.init();
+    game.placePosts();
 
 
-  var animate = setInterval(function () {
-    game.scroll(-1);
-  }, 25);
+    var animate = setInterval(function () {
+        game.scroll(-1);
+    }, 25);
 });
