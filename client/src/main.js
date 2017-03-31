@@ -11,8 +11,15 @@ var game = {
   placePosts: function() {
     var postTemplate = document.querySelector('#templates .post');
     var length = game.layer.offsetWidth;
+    var offset = game.layer.offsetLeft;
 
-    for (var i = 0; i < length; i += 50) {
+    var chunkEnd = length + offset + 4000;
+    var chunkStart = length + offset;
+
+    // var chunkEnd = length;
+    // var chunkStart = 0;
+
+    for (var i = chunkStart; i < chunkEnd; i += 50) {
 
       var post = postTemplate.cloneNode();
 
@@ -38,6 +45,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
   var animate = setInterval(function () {
-    game.scroll(1);
-  }, 16);
+    game.scroll(-1);
+  }, 25);
 });

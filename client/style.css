@@ -12,6 +12,9 @@ body {
     background: -webkit-linear-gradient(top, #25aafc 0%,#aefce4 35%,#78f733 89%,#c47317 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #25aafc 0%,#aefce4 35%,#78f733 89%,#c47317 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#25aafc', endColorstr='#c47317',GradientType=0 ); /* IE6-9 */
+
+
+    overflow: hidden;
 }
 
 * {
@@ -24,6 +27,8 @@ body {
     width: 40000px;
     height: 100%;
     border-bottom: 8px solid darkgray;
+    translateZ(0);
+    -webkit-translateZ(0);
 }
 
 .post {

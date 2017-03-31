@@ -34,3 +34,10 @@ job
 - accept_time
 - completion_time
 - max_duration
+
+
+
+rendering / chunking:
+- every ~500px, recalculate chunks
+- if within 500px on left / right bound, add chunk of items
+- remove obsolete chunk items (not within margin)
