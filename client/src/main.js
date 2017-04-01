@@ -50,6 +50,11 @@ var game = {
                     break;
                 case 32:
                     // console.log('space');
+                    if (game.gameLoop !== null) {
+                        game.stop();
+                    } else {
+                        game.start();
+                    }
                     break;
                 default:
                     console.log(evt.keyCode);
@@ -57,7 +62,7 @@ var game = {
         });
 
         window.addEventListener('keyup', function (evt) {
-            game.move = false;
+            // game.move = false;
         });
     },
 
@@ -100,18 +105,13 @@ var game = {
         var newLeft = game.truck.offsetLeft + amount;
         game.truckOffset = newLeft;
         game.truck.setAttribute('style', 'left: '+ newLeft + 'px');
-    }
-};
+    },
 
-window.addEventListener('DOMContentLoaded', function () {
-    game.init();
-    game.placePosts();
+    afStep: function (timestamp) {
+        var speed = 5;
+        var truckLength = game.truck.offsetWidth;
 
-    var speed = 5;
-    var truckLength = game.truck.offsetWidth;
-
-    var gameLoop = setInterval(function () {
-
+        // TODO: assume update
         if (game.move === true) {
 
             game.moveTruck(game.direction * speed);
@@ -124,5 +124,46 @@ window.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-    }, 25); // 40fps
+        game.afCallback = window.requestAnimationFrame(game.afStep);
+    },
+
+    update: function () {
+        // game update
+        // console.log('update');
+
+
+    },
+
+    gameLoopInterval: 20, // 50fps
+    gameLoop: null,
+    afCallback: null,
+
+    start: function () {
+        window.cancelAnimationFrame(game.afCallback);
+        clearInterval(game.gameLoop);
+
+        game.gameLoop = setInterval(game.update, game.gameLoopInterval);
+        game.afCallback = window.requestAnimationFrame(game.afStep);
+    },
+
+    stop: function () {
+        window.cancelAnimationFrame(game.afCallback);
+        clearInterval(game.gameLoop);
+
+        game.afCallback = null;
+        game.gameLoop = null;
+    }
+};
+
+window.addEventListener('DOMContentLoaded', function () {
+    game.init();
+    game.placePosts();
+
+    game.start();
+
+    // animation start time
+    // object target position change per time interval
+    // set object position to amount of position change per interval relative to animation time passed
+    // suspend / resume animations
+    // suspend / resume game updates
 });
