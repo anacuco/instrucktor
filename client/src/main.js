@@ -107,11 +107,22 @@ window.addEventListener('DOMContentLoaded', function () {
     game.init();
     game.placePosts();
 
+    var speed = 5;
+    var truckLength = game.truck.offsetWidth;
+
     var gameLoop = setInterval(function () {
 
         if (game.move === true) {
-            game.scroll(-game.direction);
-            game.moveTruck(game.direction);
+
+            game.moveTruck(game.direction * speed);
+
+            if (
+                game.truckOffset < (-game.currentOffset + game.viewPortPadding)
+                || game.truckOffset + truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
+            ) {
+                game.scroll(-game.direction * speed);
+            }
         }
+
     }, 25); // 40fps
 });
