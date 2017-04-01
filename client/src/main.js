@@ -7,6 +7,7 @@ var game = {
         game.layer = document.querySelector('#layer-0');
         game.currentOffset = game.layer.offsetLeft;
         game.truck = document.querySelector('#user1');
+        game.truckLength = game.truck.offsetWidth;
         game.truckOffset = game.truck.offsetLeft;
 
         game.viewportWidth = window.innerWidth;
@@ -81,7 +82,8 @@ var game = {
 
             var post = postTemplate.cloneNode();
 
-            post.setAttribute('style', 'left: ' + i + 'px');
+            // post.setAttribute('style', 'left: ' + i + 'px');
+            post.style.left = i + 'px';
 
             game.layer.appendChild(post);
         }
@@ -92,7 +94,8 @@ var game = {
 
     scroll: function (amount) {
         var newOffset = game.currentOffset + amount;
-        game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
+        // game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
+        game.layer.style.left = newOffset + 'px';
         game.currentOffset = newOffset;
     },
 
@@ -104,23 +107,25 @@ var game = {
     moveTruck: function (amount) {
         var newLeft = game.truck.offsetLeft + amount;
         game.truckOffset = newLeft;
-        game.truck.setAttribute('style', 'left: '+ newLeft + 'px');
+        // game.truck.setAttribute('style', 'left: '+ newLeft + 'px');
+        game.truck.style.left = newLeft + 'px';
     },
 
+    speed: 5,
+    truckLength: 0,
+
     afStep: function (timestamp) {
-        var speed = 5;
-        var truckLength = game.truck.offsetWidth;
 
         // TODO: assume update
         if (game.move === true) {
 
-            game.moveTruck(game.direction * speed);
+            game.moveTruck(game.direction * game.speed);
 
             if (
                 game.truckOffset < (-game.currentOffset + game.viewPortPadding)
-                || game.truckOffset + truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
+                || game.truckOffset + game.truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
             ) {
-                game.scroll(-game.direction * speed);
+                game.scroll(-game.direction * game.speed);
             }
         }
 
@@ -130,8 +135,6 @@ var game = {
     update: function () {
         // game update
         // console.log('update');
-
-
     },
 
     gameLoopInterval: 20, // 50fps
