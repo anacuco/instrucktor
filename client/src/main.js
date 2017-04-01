@@ -12,6 +12,7 @@ var game = {
     },
 
     direction: 1,
+    move: false,
 
     bindKeyboard: function () {
         window.addEventListener('keydown', function (evt) {
@@ -22,11 +23,13 @@ var game = {
                 case 37:
                 console.log('left');
                 game.direction = -1;
+                game.move = true;
                 game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(-1); transition: .1s');
                 break;
                 case 39:
                 console.log('right');
                 game.direction = 1;
+                game.move = true;
                 game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(1); transition: .1s');
                 break;
                 case 38:
@@ -38,6 +41,10 @@ var game = {
                 default:
                 console.log(evt.keyCode);
             }
+        });
+
+        window.addEventListener('keyup', function (evt) {
+            game.move = false;
         });
     },
 
@@ -84,7 +91,10 @@ window.addEventListener('DOMContentLoaded', function () {
     game.placePosts();
 
     var gameLoop = setInterval(function () {
-        game.scroll(-game.direction);
-        game.moveTruck(game.direction);
-    }, 25);
+
+        if (game.move === true) {
+            game.scroll(-game.direction);
+            game.moveTruck(game.direction);
+        }
+    }, 25); // 40fps
 });
