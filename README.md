@@ -1,3 +1,22 @@
+# Instrucktor
+
+## Start
+open client/public/index.html in a browser
+
+## Development
+
+    npm install
+    npm run watch
+
+## Building
+
+    npm run build
+    npm run build-dev
+
+
+
+
+## Notepad
 - control with right-left key
 - 1px = 10m - 1km = 100px
 
