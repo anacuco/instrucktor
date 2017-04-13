@@ -17,6 +17,10 @@ gulp.task('build', () => {
     return browserify(paths.client, {debug: process.env.NODE_ENV === 'development'})
         .transform('babelify', {presets: presets})
         .bundle()
+        .on('error', function (err) {
+            console.log('\x1b[31mBuild error: %s\x1b[0m', err.message);
+            this.emit('end');
+        })
         .pipe(fs.createWriteStream(paths.clientTarget));
 })
 
