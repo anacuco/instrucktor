@@ -2,6 +2,54 @@
 * Created by ana on 31/03/17.
 */
 
+Object.resolve = function(path, obj) {
+    return path.split('.').reduce(function(prev, curr) {
+        return prev ? prev[curr] : undefined
+    }, obj || self)
+}
+
+var ui = {
+    uiContainer: null,
+    hudContainer: null,
+    values: [
+        {
+            'label': 'position',
+            'val': 'truckOffset',
+        }
+    ],
+
+    init: function () {
+        ui.uiContainer = document.querySelector('#layer-ui');
+        ui.hudContainer = ui.uiContainer.querySelector('#hud');
+
+        ui.hudContainer.querySelector('#playerName').innerHTML = 'Player Name';
+        ui.valueContainer = ui.hudContainer.querySelector('ul');
+
+        ui.render(0);
+    },
+
+    updateInterval: 200, // 5fps
+    lastUpdate: -self.updateInterval,
+    render: function (timestamp) {
+        if (ui.lastUpdate > timestamp - ui.updateInterval) return;
+
+        // console.log(Object.resolve(ui.values[0].val, game));
+
+        let list = '';
+
+        for (let i in ui.values) {
+            let value = ui.values[i];
+
+            list += `${value.label}: ${Object.resolve(value.val, game)}`;
+        }
+
+        ui.valueContainer.innerHTML = list;
+
+        ui.lastUpdate = timestamp;
+        // console.log('ui update', timestamp);
+    }
+}
+
 var game = {
     init: function () {
         game.layer = document.querySelector('#layer-0');
@@ -12,8 +60,11 @@ var game = {
 
         game.viewportWidth = window.innerWidth;
 
+        game.placePosts();
         game.bindKeyboard();
         game.bindResize();
+
+        ui.init();
     },
 
     direction: 1,
@@ -23,6 +74,8 @@ var game = {
     bindResize: function () {
         window.addEventListener('resize', function (evt) {
             game.viewportWidth = window.innerWidth;
+
+            // TODO: if truck is outside bounds, move world
 
             console.log(game.viewportWidth);
         });
@@ -79,12 +132,8 @@ var game = {
         // var chunkStart = 0;
 
         for (var i = chunkStart; i < chunkEnd; i += 200) {
-
             var post = postTemplate.cloneNode();
-
-            // post.setAttribute('style', 'left: ' + i + 'px');
             post.style.left = i + 'px';
-
             game.layer.appendChild(post);
         }
     },
@@ -94,20 +143,17 @@ var game = {
 
     scroll: function (amount) {
         var newOffset = game.currentOffset + amount;
-        // game.layer.setAttribute('style', 'left: ' + newOffset + 'px');
         game.layer.style.left = newOffset + 'px';
         game.currentOffset = newOffset;
     },
 
     truck: null,
     truckOffset: null,
-
     viewPortPadding: 100,
 
     moveTruck: function (amount) {
         var newLeft = game.truck.offsetLeft + amount;
         game.truckOffset = newLeft;
-        // game.truck.setAttribute('style', 'left: '+ newLeft + 'px');
         game.truck.style.left = newLeft + 'px';
     },
 
@@ -115,6 +161,11 @@ var game = {
     truckLength: 0,
 
     afStep: function (timestamp) {
+
+        game.afTs = timestamp;
+
+        // console.log(game.afTs);
+        ui.render(timestamp);
 
         // TODO: assume update
         if (game.move === true) {
@@ -140,6 +191,7 @@ var game = {
     gameLoopInterval: 20, // 50fps
     gameLoop: null,
     afCallback: null,
+    afTs: null,
 
     start: function () {
         window.cancelAnimationFrame(game.afCallback);
@@ -160,10 +212,9 @@ var game = {
 
 window.addEventListener('DOMContentLoaded', function () {
     game.init();
-    game.placePosts();
-
     game.start();
 
+    // TODO:
     // animation start time
     // object target position change per time interval
     // set object position to amount of position change per interval relative to animation time passed
