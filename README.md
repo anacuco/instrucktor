@@ -3,12 +3,12 @@
 ## Start
 open client/public/index.html in a browser
 
-## Development
+## Develop
 
     npm install
     npm run watch
 
-## Building
+## Build
 
     npm run build
     npm run build-dev
