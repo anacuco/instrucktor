@@ -26,5 +26,14 @@
   "bugs": {
     "url": "https://github.com/anacuco/instrucktor/issues"
   },
-  "homepage": "https://github.com/anacuco/instrucktor#readme"
+  "homepage": "https://github.com/anacuco/instrucktor#readme",
+  "eslintConfig": {
+      "env": {
+          "browser": true,
+          "node": true
+      },
+      "parserOptions": {
+          "ecmaVersion": 6
+      }
+  }
 }
