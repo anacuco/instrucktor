@@ -29,19 +29,19 @@ gulp.task('monitor-build', () => {
 
     gulp.watch(paths.clientTarget, (evt) => {
         if (evt.type === 'changed') {
-            let stat = fs.statSync(paths.clientTarget);
-            let size = Math.round(stat.size / 1024);
-            let change = Math.round(((stat.size / currentSize * 100) - 100) * 10) / 10;
-            let date = new Date();
-            let message = `[${date}] build size: ${size} Kb - change: ${change}%`;
+            setTimeout(() => {
+                let stat = fs.statSync(paths.clientTarget);
+                // console.log('changed stat', stat);
+                let size = Math.round(stat.size / 1024);
+                let change = Math.round(((stat.size / currentSize * 100) - 100) * 10) / 10;
+                let date = new Date();
+                let message = `[${date}] build size: ${size} Kb - change: ${change}%`;
 
-            fs.appendFileSync('monitor-build.log', message + '\r\n');
-            currentSize = stat.size;
-            console.log(message);
-            return;
+                fs.appendFileSync('monitor-build.log', message + '\r\n');
+                currentSize = stat.size;
+                console.log(message);
+            }, 500); // size is empty on 'changed' :(
         }
-
-        console.log(evt);
     })
 })
 
