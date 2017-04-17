@@ -2,6 +2,10 @@ const gulp = require("gulp");
 const browserify = require('browserify');
 const fs = require('fs');
 
+if (typeof process.env.NODE_ENV === 'undefined') {
+    process.env.NODE_ENV = 'production';
+}
+
 var paths = {
     client: 'client/src/main.js',
     clientScripts: ['client/src/**/*.js'],
@@ -9,12 +13,13 @@ var paths = {
 };
 
 let presets = ["es2015"];
-if (process.env.NODE_ENV !== 'development') {
+let config = {debug: process.env.NODE_ENV === 'development'};
+if (process.env.NODE_ENV === 'production') {
     presets.push("babili");
 }
 
 gulp.task('build', () => {
-    return browserify(paths.client, {debug: process.env.NODE_ENV === 'development'})
+    return browserify(paths.client, config)
         .transform('babelify', {presets: presets})
         .bundle()
         .on('error', function (err) {
@@ -32,14 +37,13 @@ gulp.task('monitor-build', () => {
             setTimeout(() => {
                 let stat = fs.statSync(paths.clientTarget);
                 // console.log('changed stat', stat);
-                let size = Math.round(stat.size / 1024);
+                let size = stat.size;
                 let change = Math.round(((stat.size / currentSize * 100) - 100) * 10) / 10;
                 let date = new Date();
-                let message = `[${date}] build size: ${size} Kb - change: ${change}%`;
-
-                fs.appendFileSync('monitor-build.log', message + '\r\n');
+                let logMessage = `[${date}] build size: ${size}`;
+                fs.appendFileSync(`monitor-build-${process.env.NODE_ENV}.log`, logMessage + '\r\n');
                 currentSize = stat.size;
-                console.log(message);
+                console.log(`build size: ${Math.round((size / 1024) * 10) / 10} Kb - change: ${change}%`);
             }, 500); // size is empty on 'changed' :(
         }
     })
