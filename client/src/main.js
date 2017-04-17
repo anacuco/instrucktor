@@ -1,54 +1,4 @@
-/**
-* Created by ana on 31/03/17.
-*/
-
-Object.resolve = function(path, obj) {
-    return path.split('.').reduce(function(prev, curr) {
-        return prev ? prev[curr] : undefined
-    }, obj || self)
-}
-
-var ui = {
-    uiContainer: null,
-    hudContainer: null,
-    values: [
-        {
-            'label': 'position',
-            'val': 'truckOffset',
-        }
-    ],
-
-    init: function () {
-        ui.uiContainer = document.querySelector('#layer-ui');
-        ui.hudContainer = ui.uiContainer.querySelector('#hud');
-
-        ui.hudContainer.querySelector('#playerName').innerHTML = 'Player Name';
-        ui.valueContainer = ui.hudContainer.querySelector('ul');
-
-        ui.render(0);
-    },
-
-    updateInterval: 200, // 5fps
-    lastUpdate: -self.updateInterval,
-    render: function (timestamp) {
-        if (ui.lastUpdate > timestamp - ui.updateInterval) return;
-
-        // console.log(Object.resolve(ui.values[0].val, game));
-
-        let list = '';
-
-        for (let i in ui.values) {
-            let value = ui.values[i];
-
-            list += `${value.label}: ${Object.resolve(value.val, game)}`;
-        }
-
-        ui.valueContainer.innerHTML = list;
-
-        ui.lastUpdate = timestamp;
-        // console.log('ui update', timestamp);
-    }
-}
+const UserInterface = require('./UserInterface');
 
 var game = {
     init: function () {
@@ -64,7 +14,8 @@ var game = {
         game.bindKeyboard();
         game.bindResize();
 
-        ui.init();
+        let uiContainer = document.querySelector('#layer-ui');
+        game.ui = new UserInterface(uiContainer, this); // this = stateContainer atm
     },
 
     direction: 1,
@@ -165,7 +116,7 @@ var game = {
         game.afTs = timestamp;
 
         // console.log(game.afTs);
-        ui.render(timestamp);
+        game.ui.render(timestamp);
 
         // TODO: assume update
         if (game.move === true) {
@@ -216,8 +167,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // TODO:
     // animation start time
-    // object target position change per time interval
-    // set object position to amount of position change per interval relative to animation time passed
+    // move object to target position per time interval, relative to speed
+    // controls set object target position, relative to speed
     // suspend / resume animations
     // suspend / resume game updates
 });
