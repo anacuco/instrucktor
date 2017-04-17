@@ -1,7 +1,14 @@
 const UserInterface = require('./UserInterface');
 const Truck = require('./Truck');
+const Keyboard = require('./Keyboard');
 
 var game = {
+    move: false,
+    layer: null,
+    currentOffset: null,
+    viewportWidth: null,
+    viewPortPadding: 100,
+
     init: function () {
         game.layer = document.querySelector('#layer-0');
         game.currentOffset = game.layer.offsetLeft;
@@ -12,15 +19,15 @@ var game = {
         game.viewportWidth = window.innerWidth;
 
         game.placePosts();
-        game.bindKeyboard();
+        Keyboard.bind(window);
+        Keyboard.game = this;
+        // TODO: add controls layer, keyboard (other other inputs) call methods there
+
         game.bindResize();
 
         let uiContainer = document.querySelector('#layer-ui');
         game.ui = new UserInterface(uiContainer, this); // this = stateContainer atm
     },
-
-    move: false,
-    viewportWidth: null,
 
     bindResize: function () {
         window.addEventListener('resize', function (evt) {
@@ -29,45 +36,6 @@ var game = {
             // TODO: if truck is outside bounds, move world
 
             console.log(game.viewportWidth);
-        });
-    },
-
-    bindKeyboard: function () {
-        window.addEventListener('keydown', function (evt) {
-            switch(evt.keyCode) {
-                case 40:
-                    console.log('down');
-                    break;
-                case 37:
-                    // console.log('left');
-                    game.truck.direction = -1;
-                    game.move = true;
-                    // game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(-1); transition: .1s');
-                    break;
-                case 39:
-                    // console.log('right');
-                    game.truck.direction = 1;
-                    game.move = true;
-                    // game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(1); transition: .1s');
-                    break;
-                case 38:
-                    console.log('up');
-                    break;
-                case 32:
-                    // console.log('space');
-                    if (game.gameLoop !== null) {
-                        game.stop();
-                    } else {
-                        game.start();
-                    }
-                    break;
-                default:
-                    console.log(evt.keyCode);
-            }
-        });
-
-        window.addEventListener('keyup', function (evt) {
-            // game.move = false;
         });
     },
 
@@ -89,19 +57,14 @@ var game = {
         }
     },
 
-    layer: null,
-    currentOffset: null,
-
     scroll: function (amount) {
         var newOffset = game.currentOffset + amount;
         game.layer.style.left = newOffset + 'px';
         game.currentOffset = newOffset;
     },
 
-    viewPortPadding: 100,
-
     afStep: function (timestamp) {
-
+        // console.log('frametime:', timestamp - game.afTs);
         game.afTs = timestamp;
 
         // console.log(game.afTs);
