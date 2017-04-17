@@ -5,10 +5,20 @@ class Truck {
 
         this.truckLength = this.containerElement.offsetWidth;
         this.truckOffset = this.containerElement.offsetLeft;
-        this.x = 0;
+        this.initialOffset = this.truckOffset;
+
         this.speed = 5;
 
         this._direction = 1;
+    }
+
+    set x (value) {
+        this.truckOffset = this.initialOffset + value;
+        this.containerElement.style.left = this.truckOffset + 'px';
+    }
+
+    get x () {
+        return this.truckOffset - this.initialOffset;
     }
 
     set direction (value) {
@@ -23,9 +33,7 @@ class Truck {
     }
 
     move (amount) {
-        var newLeft = this.containerElement.offsetLeft + amount; // TODO: dom access
-        this.truckOffset = newLeft;
-        this.containerElement.style.left = newLeft + 'px';
+        this.x += amount;
     }
 }
 
