@@ -16,7 +16,7 @@ class UserInterface {
         this.hudValues = [
             {
                 'label': 'position',
-                'val': 'truckOffset',
+                'val': 'truck.truckOffset',
             }
         ];
 

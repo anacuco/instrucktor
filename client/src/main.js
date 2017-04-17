@@ -1,12 +1,13 @@
 const UserInterface = require('./UserInterface');
+const Truck = require('./Truck');
 
 var game = {
     init: function () {
         game.layer = document.querySelector('#layer-0');
         game.currentOffset = game.layer.offsetLeft;
-        game.truck = document.querySelector('#user1');
-        game.truckLength = game.truck.offsetWidth;
-        game.truckOffset = game.truck.offsetLeft;
+
+        let truckEl = document.querySelector('#user1');
+        game.truck = new Truck(truckEl);
 
         game.viewportWidth = window.innerWidth;
 
@@ -18,7 +19,6 @@ var game = {
         game.ui = new UserInterface(uiContainer, this); // this = stateContainer atm
     },
 
-    direction: 1,
     move: false,
     viewportWidth: null,
 
@@ -40,15 +40,15 @@ var game = {
                     break;
                 case 37:
                     // console.log('left');
-                    game.direction = -1;
+                    game.truck.direction = -1;
                     game.move = true;
-                    game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(-1); transition: .1s');
+                    // game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(-1); transition: .1s');
                     break;
                 case 39:
                     // console.log('right');
-                    game.direction = 1;
+                    game.truck.direction = 1;
                     game.move = true;
-                    game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(1); transition: .1s');
+                    // game.truck.querySelector('svg').setAttribute('style', 'transform: scaleX(1); transition: .1s');
                     break;
                 case 38:
                     console.log('up');
@@ -98,18 +98,7 @@ var game = {
         game.currentOffset = newOffset;
     },
 
-    truck: null,
-    truckOffset: null,
     viewPortPadding: 100,
-
-    moveTruck: function (amount) {
-        var newLeft = game.truck.offsetLeft + amount;
-        game.truckOffset = newLeft;
-        game.truck.style.left = newLeft + 'px';
-    },
-
-    speed: 5,
-    truckLength: 0,
 
     afStep: function (timestamp) {
 
@@ -120,14 +109,13 @@ var game = {
 
         // TODO: assume update
         if (game.move === true) {
-
-            game.moveTruck(game.direction * game.speed);
+            game.truck.move(game.truck.direction * game.truck.speed);
 
             if (
-                game.truckOffset < (-game.currentOffset + game.viewPortPadding)
-                || game.truckOffset + game.truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
+                game.truck.truckOffset < (-game.currentOffset + game.viewPortPadding)
+                || game.truck.truckOffset + game.truck.truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
             ) {
-                game.scroll(-game.direction * game.speed);
+                game.scroll(-game.truck.direction * game.truck.speed);
             }
         }
 
