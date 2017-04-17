@@ -5,8 +5,6 @@ html {
 body {
     margin: 0;
     height: 100%;
-
-
 }
 
 #instrucktor * {
@@ -25,6 +23,8 @@ body {
     background: -webkit-linear-gradient(top, #25aafc 0%, #aefce4 35%, #78f733 89%, #c47317 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #25aafc 0%, #aefce4 35%, #78f733 89%, #c47317 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#25aafc', endColorstr='#c47317', GradientType=0); /* IE6-9 */
+
+    font: 10px/13px Arial;
 }
 
 .layer {
@@ -34,7 +34,7 @@ body {
 }
 
 #layer-ui {
-    /*background: pink;*/
+
 }
 
 #layer-0 {
@@ -83,6 +83,8 @@ body {
     bottom: 0;
     left: 20100px;
     z-index: 200;
+    /*translateZ(0);
+    -webkit-translateZ(0);*/
 }
 
 .truck svg {
