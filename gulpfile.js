@@ -12,7 +12,7 @@ var paths = {
     clientTarget: 'client/public/client.js',
 };
 
-let presets = ["es2015"];
+let presets = ["es2016"];
 let config = {debug: process.env.NODE_ENV === 'development'};
 if (process.env.NODE_ENV === 'production') {
     presets.push("babili");
