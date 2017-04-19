@@ -5,6 +5,7 @@ const Layer = require('./Layer');
 const templates = require('./Templates');
 
 var game = {
+    debug: false,
     move: false,
     layer: null,
     currentOffset: null,
@@ -53,7 +54,10 @@ var game = {
     },
 
     afStep: function (timestamp) {
-        // console.log('frametime:', timestamp - game.afTs);
+        if (game.debug === true) {
+            console.log('frametime:', timestamp - game.afTs);
+            var perfDate = performance.now();
+        }
         game.afTs = timestamp;
 
         // console.log(game.afTs);
@@ -73,6 +77,9 @@ var game = {
             }
         }
 
+        if (game.debug === true) {
+            console.log('step time:', performance.now() - perfDate);
+        }
         game.afCallback = window.requestAnimationFrame(game.afStep);
     },
 
