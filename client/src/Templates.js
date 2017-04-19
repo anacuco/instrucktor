@@ -27,7 +27,7 @@ const Templates = {
             throw Error(`Argument error: template "${identifier}" not found`);
         }
 
-        return this.templates[identifier].cloneNode();
+        return this.templates[identifier].cloneNode(true);
     }
 }
 

@@ -17,9 +17,12 @@ var game = {
         let layer0 = document.querySelector('#layer-0');
         game.layer = new Layer(layer0);
 
-        // TODO: add truck to layer0
-        let truckEl = document.querySelector('#user1');
+        // generate truck from data + template
+        let truckEl = templates.get('truck');
+        truckEl.id = "user1";
         game.truck = new Truck(truckEl);
+        game.layer.addDynamic(game.truck);
+        game.layer.update();
 
         let uiContainer = document.querySelector('#layer-ui');
         game.ui = new UserInterface(uiContainer, this); // this = stateContainer atm
@@ -28,7 +31,7 @@ var game = {
         Keyboard.game = this;
         // TODO: add controls layer, keyboard (other other inputs) dispatch methods there
 
-        // TODO: viewport mgmt
+        // TODO: viewport mgmt, game x = 0
         game.viewportWidth = window.innerWidth;
         game.currentOffset = game.layer.currentOffset;
         game.bindResize();
@@ -60,13 +63,12 @@ var game = {
         if (game.move === true) {
             game.truck.move(game.truck.direction * game.truck.speed);
 
-            // console.log(game.truck.currentOffset, -game.currentOffset);
-
             // TODO: x-based
             if (
                 game.truck.currentOffset < (-game.currentOffset + game.viewPortPadding)
                 || game.truck.currentOffset + game.truck.width > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
             ) {
+                // TODO: viewport tracking
                 game.scroll(-game.truck.direction * game.truck.speed);
             }
         }
@@ -108,7 +110,7 @@ window.addEventListener('DOMContentLoaded', function () {
     // TODO:
     // animation start time
     // move object to target position per time interval, relative to speed
-    // controls set object target position, relative to speed
+    // controls set object target position, relative to speed, time
     // suspend / resume animations
     // suspend / resume game updates
 });
