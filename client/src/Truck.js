@@ -3,9 +3,9 @@ class Truck {
         this.containerElement = containerElement;
         this.svg = this.containerElement.querySelector('svg');
 
-        this.truckLength = this.containerElement.offsetWidth;
-        this.truckOffset = this.containerElement.offsetLeft;
-        this.initialOffset = this.truckOffset;
+        this.width = this.containerElement.offsetWidth;
+        this.initialOffset = this.containerElement.offsetLeft;
+        this.currentOffset = this.initialOffset;
 
         this.speed = 5;
 
@@ -13,12 +13,12 @@ class Truck {
     }
 
     set x (value) {
-        this.truckOffset = this.initialOffset + value;
-        this.containerElement.style.left = this.truckOffset + 'px';
+        this.currentOffset = this.initialOffset + value;
+        this.containerElement.style.left = this.currentOffset + 'px';
     }
 
     get x () {
-        return this.truckOffset - this.initialOffset;
+        return this.currentOffset - this.initialOffset;
     }
 
     set direction (value) {

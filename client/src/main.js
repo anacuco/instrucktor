@@ -1,6 +1,7 @@
 const UserInterface = require('./UserInterface');
 const Truck = require('./Truck');
 const Keyboard = require('./Keyboard');
+const Layer = require('./Layer');
 
 var game = {
     move: false,
@@ -10,57 +11,39 @@ var game = {
     viewPortPadding: 100,
 
     init: function () {
-        game.layer = document.querySelector('#layer-0');
-        game.currentOffset = game.layer.offsetLeft;
+        let layer0 = document.querySelector('#layer-0');
+        game.layer = new Layer(layer0);
 
+        // TODO: add truck to layer0
         let truckEl = document.querySelector('#user1');
         game.truck = new Truck(truckEl);
 
-        game.viewportWidth = window.innerWidth;
-
-        game.placePosts();
-        Keyboard.bind(window);
-        Keyboard.game = this;
-        // TODO: add controls layer, keyboard (other other inputs) call methods there
-
-        game.bindResize();
-
         let uiContainer = document.querySelector('#layer-ui');
         game.ui = new UserInterface(uiContainer, this); // this = stateContainer atm
+
+        Keyboard.bind(window);
+        Keyboard.game = this;
+        // TODO: add controls layer, keyboard (other other inputs) dispatch methods there
+
+        // TODO: viewport mgmt
+        game.viewportWidth = window.innerWidth;
+        game.currentOffset = game.layer.currentOffset;
+        game.bindResize();
     },
 
     bindResize: function () {
         window.addEventListener('resize', function (evt) {
             game.viewportWidth = window.innerWidth;
 
-            // TODO: if truck is outside bounds, move world
+            // TODO: if truck is outside bounds, move world (debounced)
 
             console.log(game.viewportWidth);
         });
     },
 
-    placePosts: function() {
-        var postTemplate = document.querySelector('#templates .post');
-        var length = game.layer.offsetWidth;
-        var offset = game.layer.offsetLeft;
-
-        var chunkEnd = length + offset + 4000;
-        var chunkStart = length + offset;
-
-        // var chunkEnd = length;
-        // var chunkStart = 0;
-
-        for (var i = chunkStart; i < chunkEnd; i += 200) {
-            var post = postTemplate.cloneNode();
-            post.style.left = i + 'px';
-            game.layer.appendChild(post);
-        }
-    },
-
     scroll: function (amount) {
-        var newOffset = game.currentOffset + amount;
-        game.layer.style.left = newOffset + 'px';
-        game.currentOffset = newOffset;
+        game.layer.scroll(amount);
+        game.currentOffset = game.layer.currentOffset;
     },
 
     afStep: function (timestamp) {
@@ -74,9 +57,12 @@ var game = {
         if (game.move === true) {
             game.truck.move(game.truck.direction * game.truck.speed);
 
+            // console.log(game.truck.currentOffset, -game.currentOffset);
+
+            // TODO: x-based
             if (
-                game.truck.truckOffset < (-game.currentOffset + game.viewPortPadding)
-                || game.truck.truckOffset + game.truck.truckLength > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
+                game.truck.currentOffset < (-game.currentOffset + game.viewPortPadding)
+                || game.truck.currentOffset + game.truck.width > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
             ) {
                 game.scroll(-game.truck.direction * game.truck.speed);
             }
