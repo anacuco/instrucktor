@@ -2,6 +2,7 @@ const UserInterface = require('./UserInterface');
 const Truck = require('./Truck');
 const Keyboard = require('./Keyboard');
 const Layer = require('./Layer');
+const templates = require('./Templates');
 
 var game = {
     move: false,
@@ -11,6 +12,8 @@ var game = {
     viewPortPadding: 100,
 
     init: function () {
+        templates.load(document.querySelector('#templates'));
+
         let layer0 = document.querySelector('#layer-0');
         game.layer = new Layer(layer0);
 

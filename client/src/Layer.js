@@ -1,3 +1,5 @@
+const templates = require('./Templates');
+
 class Layer {
     // dynamic objects
     // static objects
@@ -24,7 +26,7 @@ class Layer {
         // find static objects in chunk range
 
         // generate objects in chunk range
-        this.generatePosts(start, end);
+        this.generatePosts(start, end, 200);
     }
 
     scroll (amount) {
@@ -35,11 +37,9 @@ class Layer {
         this.currentOffset = newOffset;
     }
 
-    generatePosts (start, end) {
-        let postTemplate = document.querySelector('#templates .post');
-
-        for (let i = start; i < end; i += 200) {
-            let post = postTemplate.cloneNode();
+    generatePosts (start, end, distance) {
+        for (let i = start; i < end; i += distance) {
+            let post = templates.get('post');
             post.style.left = i + 'px';
             this.containerElement.appendChild(post);
         }
