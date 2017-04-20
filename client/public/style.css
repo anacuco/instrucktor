@@ -52,6 +52,8 @@ body {
 }
 
 #layer-2 {
+    left: -5000px;
+    width: 10000px;
     z-index: 300;
 }
 
@@ -81,6 +83,16 @@ body {
     z-index: 200;
     /*translateZ(0);
     -webkit-translateZ(0);*/
+}
+
+.cloud {
+    width: 200px;
+    height: 70px;
+    position: absolute;
+    bottom: 300px;
+    left: 5100px;
+    background: white;
+    border-radius: 50%;
 }
 
 .truck svg {

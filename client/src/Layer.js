@@ -13,6 +13,7 @@ class Layer {
         this.width = this.containerElement.offsetWidth;
         this.initialOffset = this.containerElement.offsetLeft;
         this.currentOffset = this.initialOffset;
+        this.nextOffset = this.currentOffset;
 
         this.dynamicObjects = [];
         this.activeObjects = [];
@@ -71,17 +72,35 @@ class Layer {
     // destroy () {}
 
     scroll (amount) {
-        var newOffset = this.currentOffset + Math.round(amount * this.scrollFactor);
-        if (this.currentOffset === newOffset) return;
+        this.nextOffset += amount * this.scrollFactor;
+        let nextFullPixel = Math.round(this.nextOffset);
+        if (this.currentOffset === nextFullPixel) return;
 
-        this.containerElement.style.left = newOffset + 'px';
-        this.currentOffset = newOffset;
+        this.currentOffset = nextFullPixel;
+        this.nextOffset = this.currentOffset;
+        this.containerElement.style.left = this.currentOffset + 'px';
     }
 
     generatePosts (start, end, distance) {
         for (let i = start; i < end; i += distance) {
             let post = templates.get('post');
             post.style.left = i + 'px';
+            this.containerElement.appendChild(post);
+        }
+    }
+
+    rand (start, end) {
+        return Math.ceil(Math.random() * (end - start)) + start;
+    }
+
+    generateClouds (start, end, density) {
+        for (let i = start; i < end; i += this.rand(200, 500)) {
+
+            let post = templates.get('cloud');
+            post.style.left = i + 'px';
+            post.style.bottom = this.rand(200, 400) + 'px';
+            post.style.width = this.rand(100, 250) + 'px';
+            post.style.height = this.rand(40, 80) + 'px';
             this.containerElement.appendChild(post);
         }
     }

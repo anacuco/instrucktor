@@ -8,6 +8,7 @@ var game = {
     debug: false,
     move: false,
     layer: null,
+    layer2: null,
     currentOffset: null,
     viewportWidth: null,
     viewPortPadding: 100,
@@ -15,8 +16,21 @@ var game = {
     init: function () {
         templates.load(document.querySelector('#templates'));
 
+        // layer 0: foreground
         let layer0 = document.querySelector('#layer-0');
         game.layer = new Layer(layer0);
+
+        // layer 1: scenery
+
+        let layer2 = document.querySelector('#layer-2');
+        game.layer2 = new Layer(layer2, .04);
+        // TODO: chunks of weather (clouds), infinitely moving along (not just planted on layer..)
+        game.layer2.generateClouds(0, 10000);
+        // layer 2: near horizon (weather)
+
+        // layer 3: far horizon (mountains)
+
+        // layer 4: sky/backdrop
 
         // generate truck from data + template
         let truckEl = templates.get('truck');
@@ -50,6 +64,7 @@ var game = {
 
     scroll: function (amount) {
         game.layer.scroll(amount);
+        game.layer2.scroll(amount);
         game.currentOffset = game.layer.currentOffset;
     },
 
