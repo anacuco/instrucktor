@@ -43,6 +43,10 @@ class Truck {
     get element () {
         return this.containerElement;
     }
+
+    isWithin (start, end) {
+        return this.currentOffset > start && this.currentOffset + this.width < end;
+    }
 }
 
 module.exports = Truck;

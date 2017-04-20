@@ -68,9 +68,9 @@ var game = {
             game.truck.move(game.truck.direction * game.truck.speed);
 
             // TODO: x-based
-            if (
-                game.truck.currentOffset < (-game.currentOffset + game.viewPortPadding)
-                || game.truck.currentOffset + game.truck.width > ((-game.currentOffset) + game.viewportWidth - game.viewPortPadding)
+            let viewportLeftBound = -game.currentOffset + game.viewPortPadding;
+            let viewportRightBound = -game.currentOffset + game.viewportWidth - game.viewPortPadding;
+            if ( !game.truck.isWithin(viewportLeftBound, viewportRightBound)
             ) {
                 // TODO: viewport tracking
                 game.scroll(-game.truck.direction * game.truck.speed);
