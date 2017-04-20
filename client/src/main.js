@@ -6,7 +6,7 @@ const templates = require('./Templates');
 
 var game = {
     debug: false,
-    move: false,
+    move: true,
     layer: null,
     layer2: null,
     currentOffset: null,
