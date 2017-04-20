@@ -6,7 +6,9 @@ const Templates = {
         this.containerElement = containerElement;
 
         // iterate over children
-        for (let template of this.containerElement.children) {
+        for (let template of this.containerElement.childNodes) {
+            if (template.constructor.name === 'Text') continue; // TODO: HTMLElement / Element, but all types
+
             let name = template.className;
 
             if (typeof this.templates[name] !== 'undefined') {
