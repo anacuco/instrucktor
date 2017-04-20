@@ -48,22 +48,18 @@ body {
 }
 
 #layer-1 {
-    position: absolute;
     z-index: 400;
 }
 
 #layer-2 {
-    position: absolute;
     z-index: 300;
 }
 
 #layer-3 {
-    position: absolute;
     z-index: 200;
 }
 
 #layer-4 {
-    position: absolute;
     z-index: 100;
 }
 
