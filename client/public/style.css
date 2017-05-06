@@ -72,6 +72,12 @@ body {
     z-index: 100;
 }
 
+.building {
+    position: absolute;
+    bottom: 0;
+    height: 132px;
+}
+
 .truck {
     width: 100px;
     height: 88px;

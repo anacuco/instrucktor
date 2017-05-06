@@ -38,6 +38,16 @@ var game = {
         truckEl.id = "user1";
         game.truck = new Truck(truckEl, '016-truck-1');
         game.layer.addDynamic(game.truck);
+
+        let hangarEl = templates.get('building');
+        hangarEl.style.left = 20900 + 'px';
+        let hangarItem = {
+            x: 0,
+            element: hangarEl
+        };
+        game.layer.addStatic(hangarItem);
+
+
         game.layer.update();
 
         let uiContainer = document.querySelector('#layer-ui');

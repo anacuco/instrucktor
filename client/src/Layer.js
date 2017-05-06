@@ -15,6 +15,7 @@ class Layer {
         this.currentOffset = this.initialOffset;
         this.nextOffset = this.currentOffset;
 
+        this.staticObjects = [];
         this.dynamicObjects = [];
         this.activeObjects = [];
 
@@ -38,6 +39,11 @@ class Layer {
         }
 
         // find static objects in chunk range
+        for (let item of this.staticObjects) {
+            // TODO: isWithin for static items
+            
+            this.add(item);
+        }
 
         // generate objects in chunk range
         this.generatePosts(start, end, 200);
@@ -57,12 +63,23 @@ class Layer {
         this.containerElement.removeChild(item);
     }
 
-    addDynamic (item) {
-        // verify
+    isValidDisplayItem (item) {
         if (typeof item.x === 'undefined') return false;
         if (typeof item.element === 'undefined') return false;
 
+        return true;
+    }
+
+    addDynamic (item) {
+        if (!this.isValidDisplayItem(item)) return false;
+
         this.dynamicObjects.push(item);
+    }
+
+    addStatic (item) {
+        if (!this.isValidDisplayItem(item)) return false;
+
+        this.staticObjects.push(item);
     }
 
     // destroy () {}
