@@ -1,7 +1,9 @@
 class Truck {
-    constructor (containerElement) {
+    constructor (containerElement, iconId) {
         this.containerElement = containerElement;
         this.svg = this.containerElement.querySelector('svg');
+        this.svg.querySelector('use').setAttribute('xlink:href', `#${iconId}`);
+
         // this.width = this.containerElement.offsetWidth;
         this.width = 100;
 

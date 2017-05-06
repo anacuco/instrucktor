@@ -22,11 +22,12 @@ var game = {
 
         // layer 1: scenery
 
+        // layer 2: near horizon (weather)
         let layer2 = document.querySelector('#layer-2');
         game.layer2 = new Layer(layer2, .04);
         // TODO: chunks of weather (clouds), infinitely moving along (not just planted on layer..)
+        // (positions should come from server, everyone should see the same thing)
         game.layer2.generateClouds(0, 10000);
-        // layer 2: near horizon (weather)
 
         // layer 3: far horizon (mountains)
 
@@ -35,7 +36,7 @@ var game = {
         // generate truck from data + template
         let truckEl = templates.get('truck');
         truckEl.id = "user1";
-        game.truck = new Truck(truckEl);
+        game.truck = new Truck(truckEl, '016-truck-1');
         game.layer.addDynamic(game.truck);
         game.layer.update();
 

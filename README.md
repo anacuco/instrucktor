@@ -27,8 +27,15 @@ customize
 - body color
 
 state
-- trucks (players)
+- players (trucks)
 - world
+    - objects
+        - objectId
+        - layer
+        - type
+        - object
+            - element
+            - x
 - jobs {}
 
 

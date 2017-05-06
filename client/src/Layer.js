@@ -32,13 +32,9 @@ class Layer {
         // find dynamic objects in chunk range
         for (let item of this.dynamicObjects) {
             if (item.currentOffset < start || item.currentOffset > end) {
-                continue; // TODO: remove
+                continue; // TODO: remove / cleanup
             }
             this.add(item);
-
-            // console.log(this.activeObjects.indexOf(item));
-            // console.log(this.dynamicObjects.indexOf(item));
-            // console.log(this.dynamicObjects[0] === this.activeObjects[0]);
         }
 
         // find static objects in chunk range
